@@ -1,0 +1,132 @@
+\documentclass[
+  xhtml,%
+  %  use filename%
+  text
+]{internet}
+\usepackage{fancyvrb}
+\usepackage[scale=.8]{geometry}
+\title{Algebra in Programming}
+\begin{document}
+
+\section*{Getting Started}
+
+\begin{enumerate}
+\item Log on to the computer and launch a web browser
+\item Navigate to \texttt{http://loopspace.github.io/LuaCanvas}
+\item Click on the checkbox in the lower right corner, labelled \texttt{Graphics mode}
+\item The big area in the centre of the screen is where you can type code (we call this the \emph{editor} region).
+Clicking on the box labelled \texttt{Execute} will run your code.
+\end{enumerate}
+
+\section*{Printing Messages}
+
+To display a message, we use the \texttt{print} command.
+Click in the editor region and type:
+
+\begin{verbatim}
+print("hello world")
+\end{verbatim}
+
+Now click \texttt{Execute} to run your program.
+
+Click \texttt{Edit} to get back to the program.
+Try changing the message.
+
+\section*{Storing Information}
+
+In computer programs, we use \emph{variables} to store information.
+A variable is a label which tells the computer what information to use.
+First we have to store some information.
+Make sure you are in the editor view and type:
+
+\begin{verbatim}
+name = "Harry Potter"
+\end{verbatim}
+
+If you run this program, not a lot will happen.
+That's because we've only stored the information, we haven't done anything with it yet.
+We can combine this with our earlier message.
+After the line above, type:
+
+\begin{verbatim}
+print("Welcome to Hogwarts,", name)
+\end{verbatim}
+
+(Notice the comma after the \Verb+"+ and before \Verb+name+.)
+
+Try changing the name and see what happens.
+
+\section*{Strings and Numbers}
+
+When a computer stores information, it also remembers what \emph{type} of information it is. 
+A \emph{string} is a bit like a word; it is made out of letters and other characters, like \Verb+Harry Potter+.
+Another type of information is a \emph{number}.
+By knowing the type of information, the computer is able to do things with that information.
+
+For example, we can take a string and make all its letters lowercase.
+Following on from the above, type:
+
+\begin{verbatim}
+print(name:lower())
+\end{verbatim}
+
+What do you think you would get if you changed \Verb+lower+ to \Verb+upper+?
+
+\bigskip
+
+If we store a number, we can do numbery things with that information.
+Type:
+
+\begin{verbatim}
+x = 3
+print(x)
+print(x+4)
+print(3*x)
+\end{verbatim}
+
+(The character between the \Verb+3+ and \Verb+x+ is an \emph{asterisk}, \Verb+*+.
+What operation does it represent?)
+
+\section*{Getting Information}
+
+The last piece of programming that we need today is how to get information.
+We want to ask the person running the program for information and pass that on to the computer.
+This means that we want to store it in a variable.
+Type:
+
+\begin{verbatim}
+x = prompt("Enter something:")
+print(x)
+\end{verbatim}
+
+Run this program.
+In the text box, type something and press \Verb+return+.
+Note that the program waits for you to enter something before carrying on.
+
+\section*{Planting Vegetables}
+
+We can put this together with our algebraic expressions to find out what our gardener would plant.
+Type the following, but in place of the \Verb+?+s put the right expression (remember to use \Verb+*+ for multiplication):
+
+\begin{verbatim}
+m = prompt("How many cabbages did you plant?")
+print("You planted",?,"leeks")
+print("You planted",?,"carrots")
+print("You planted",?,"cauliflowers")
+print("Next year, you'll plant",?,"cabbages")
+\end{verbatim}
+
+\section*{Letters are Unknown Numbers}
+
+When writing the program, you didn't know what number \Verb+m+ would be.
+But you could still tell the computer what to do with it, and once the computer found out what \Verb+m+ was it could carry out your instructions.
+
+So in the program, \Verb+m+ stands for a number that \emph{we don't yet know}.
+But as it will become a known number, we can pretend that it is a number and do numbery things to it such as adding, subtracting, and multiplying.
+
+\section*{Do It Yourself}
+
+Now try the other questions on the sheet, writing programs that will ask for the initial information and give the answers to each part of the question.
+
+
+\end{document}
