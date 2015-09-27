@@ -1,0 +1,212 @@
+\documentclass[
+  xhtml,%
+  %  use filename%
+  text
+]{internet}
+%\usepackage{fancyvrb}
+%\usepackage[scale=.8]{geometry}
+\loadcss{css/mathml}
+\loadcss{css/numberedeqns}
+\loadcss{css/article}
+\loadfullcss{https://fonts.googleapis.com/css?family=Raleway:300}
+\loadcss[all and (max-width: 767px)]{css/small}
+\loadcss[all and (min-width: 768px) and (max-width: 1024px)]{css/medium}
+\loadcss[all and (min-width: 1025px)]{css/large}
+\loadjs{js/setwidth}
+\loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
+
+\usepackage{hyperref}
+
+\title{Whack a Rect}
+\date{\today}
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+\item Log on to a computer and launch a web browser (Chrome or IE should be installed, Chrome is marginally better).
+\item In the location bar, enter \href{http://loopspace.github.io/LuaCanvas}{http://loopspace.github.io/LuaCanvas}
+\item You should now have a webpage with some code in it, looking something like the following:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+end
+\end{verbatim}
+
+Click on the button marked \verb+Execute+ in the bottom left of your screen.
+
+\item The code works as follows.
+
+\begin{itemize}
+\item Everything between \verb+function setup()+ and the first \verb+end+ is run once.
+The \verb+print("hello world")+ is what puts the words \verb+hello world+ in the box on the left of the screen.
+You can change this message if you like, but you need the double inverted commas and the brackets as they are.
+
+\item Then everything between \verb+function draw()+ and the second \verb+end+ is run.
+This is run in a constant loop, several times a second.
+You can't see this at the moment because it is doing the same thing each time.
+
+\begin{itemize}
+\item \verb+backgroud(40,40,50)+ This blanks the \emph{canvas} by filling it with a solid colour.
+Try changing the numbers and see what happens (you must have three numbers).
+
+\item The lines
+
+\begin{verbatim}
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+\end{verbatim}
+
+Don't \emph{do} anything but they set up certain properties of how things will be drawn on the screen.
+Shapes can be \emph{filled} and/or \emph{stroked} (which means that their outline is drawn).
+These commands set the colours for the fill and stroke, and the width of the stroke.
+
+\item \verb+rect(20,20,100,100)+ Finally, this draws a rectangle on the screen with lower left corner at \verb+(20,20)+ (ie \(20\) pixels in from the lower left corner of the screen and \(20\) pixels up).
+It is \(100\) pixels in width and \(100\) pixels in height.
+\end{itemize}
+\end{itemize}
+
+\item One of the basic pieces of any computer program is the use of \emph{variables} to store information which can be later retrieved and used.
+The language we're using here is Lua and in Lua the syntax to set a variable is simply \verb+name = value+.
+For now, we'll say that a variable name is a string of letters, such as \verb+message+ or \verb+x+ (some other characters can be used, but definitely no spaces).
+The value can be quite varied, we'll start with a number.
+
+In the \verb+setup+ function (ie between \verb+function setup()+ and the first \verb+end+) start a new line (press \verb+return+ at the end of an existing line) and type \verb+x = 20+.
+This sets the value of \verb+x+ to \verb+20+.
+So later on in the program, we can use \verb+x+ in place of \verb+20+.
+Let's do that by changing the first \verb+20+ in the \verb+rect+ line to \verb+x+ so that it reads \verb+rect(x,20,100,100)+.
+
+If we run the program we shouldn't spot any difference.
+But if we go back and change the \verb+x = 20+ to, say, \verb+x = 100+ then we should see a change.
+
+\item Do the same for the \(y\)--coordinate and the size of the rectangle.
+Use \verb+y+ for the \(y\)--coordinate and \verb+s+ for the size.
+We'll keep our rectangle square for now, so replace \emph{both} \(100\)s by \verb+s+.
+Try changing \verb+x+, \verb+y+, and \verb+s+ to see what you get.
+How big can they get without going off the screen?
+
+\item Now let's make it a bit more interesting by getting the computer to pick those values.
+We'll get it to pick them at random.
+To do this, we need a function that returns a random number in some range.
+Lua has one which is called \verb+math.random+.
+If we give it a single value, it will return a random integer between \(1\) and that value.
+We want to be sure that our square stays on the screen so we need to know how big the screen is.
+Fortunately, we don't have to measure it: the program knows the size and stores it in the variables \verb+WIDTH+ and \verb+HEIGHT+ (note: both all uppercase).
+So replace the line in \verb+setup+ that sets \verb+x+ with \verb+x = math.random(WIDTH-100)+ (the \(-100\) is because this will be the lower left corner of the square).
+Do the same for the \verb+y+ variable, only use \verb+HEIGHT+ instead of \verb+WIDTH+.
+
+Your code should now look like this:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  x = math.random(WIDTH-100)
+  y = math.random(HEIGHT-100)
+  s = 100
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(x,y,s,s)
+end
+\end{verbatim}
+
+Each time you rerun your code, the square should change position (you can rerun your code by clicking \verb+Restart+).
+
+\item The computer can also change the value of a variable.
+Inside the \verb+draw+ function, (after the \verb+rect+ line) put \(s = s - 1\).
+This tells the computer to set the \verb+s+ variable to whatever it currently is minus \(1\).
+
+Now when you run your code you will see your square get smaller (and then bigger again!  Can you explain why?).
+
+\item A key component of any program is the use of \emph{conditionals}.
+These say ``If a condition is true, do something'', meaning that we do an action only under certain conditions.
+Let's say that when our square gets to zero size, we reset it.
+So after the line \verb+s = s - 1+ write:
+
+\begin{verbatim}
+if s == 0 then
+  x = math.random(WIDTH-100)
+  y = math.random(HEIGHT-100)
+  s = 100
+end
+\end{verbatim}
+
+(You can use the standard copy-and-paste tools to copy the middle bit from earlier in the code.)
+
+Now you should see that the square vanishes and reappears somewhere else.
+
+(You may want to change the \emph{style} parameters; feel free to do so.)
+
+\item So far so good.
+Let's make a game out of this.
+To do that, we need to make it interactive.
+
+If you click on the screen, nothing happens.
+But the computer notices that click and can do something with it if we tell it to.
+To make it notice the click, we need to define a new \emph{function}.
+So at the end of your code, type:
+
+\begin{verbatim}
+function touched(t)
+
+end
+\end{verbatim}
+
+This will get called when you click on the screen (actually it gets called slightly more often than that).
+The \verb+(t)+ part means that when it is called, a variable \verb+t+ is set which contains lots of information about the click.
+The key information that we want are the \emph{state} and \emph{position} of the click.
+We use the \emph{state} to ensure that our code only runs when the user clicks, and the \emph{position} to see if the user has clicked inside the rectangle.
+Our full function is (anything after \verb+--+ is a \emph{comment} and is ignored by the computer; you can ignore it as well -- i.e., you don't have to type it in, and lines with just a comment on can also be skipped):
+
+\begin{verbatim}
+function touched(t)
+    if t.state == "BEGAN" then -- detect whether we're clicking
+                         -- or doing something else with the mouse
+        if t.x > x -- are we to the right of the left side of the rectangle?
+            and t.x < x + s -- are we also to the left of the right side?
+            and t.y > y -- are we also above the lower side?
+            and t.y < y + s -- are we also below the upper side?
+            then -- it is okay to split complicated instructions
+                    -- on several lines like this
+              -- make a new rectangle
+              x = math.random(WIDTH-100)
+              y = math.random(HEIGHT-100)
+              s = 100
+        end -- end the position test
+    end -- end the state test
+end -- end the function
+\end{verbatim}
+
+Now when you run it, you can try to click in a square.
+If you do so, it will vanish and return in a new place.
+
+\item This isn't quite a finished game.
+We should keep score as well.
+You have most of the pieces for doing this.
+The only missing piece is to be able to display the contents of a variable.
+In \verb+setup+, put \verb+score = 0+ to initialise the score.
+At the end of \verb+draw+, put \verb+text("Score " .. score, 20,20)+ to display the current score.
+
+Exactly how the score is added up is up to you.
+Maybe you just want to count the number of successes.
+Maybe you want to subtract one for every square that disappears without being hit.
+Maybe you want the score to depend on how big the square is when it is hit.
+It's up to you!
+                
+
+
+\end{enumerate}
+\end{document}
