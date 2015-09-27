@@ -40,7 +40,7 @@ function viewport()
     return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
 }
 
-
+window.onload = function() {
 if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1)
 {
     if (viewport().width > 769) {
@@ -48,4 +48,4 @@ if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1)
 	window.addEventListener('resize', setBackgroundWidth);
     }
 }
-
+}
