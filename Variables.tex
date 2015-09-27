@@ -3,33 +3,45 @@
   %  use filename%
   text
 ]{internet}
-\usepackage{fancyvrb}
-\usepackage[scale=.8]{geometry}
+\loadcss{css/mathml}
+\loadcss{css/numberedeqns}
+\loadcss{css/article}
+\loadfullcss{https://fonts.googleapis.com/css?family=Raleway:300}
+\loadcss[all and (max-width: 767px)]{css/small}
+\loadcss[all and (min-width: 768px) and (max-width: 1024px)]{css/medium}
+\loadcss[all and (min-width: 1025px)]{css/large}
+\loadjs{js/setwidth}
+\loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
+
+
+\usepackage{hyperref}
+
 \title{Algebra in Programming}
 \begin{document}
+\maketitle
 
 \section*{Getting Started}
 
 \begin{enumerate}
 \item Log on to the computer and launch a web browser
-\item Navigate to \texttt{http://loopspace.github.io/LuaCanvas}
-\item Click on the checkbox in the lower right corner, labelled \texttt{Graphics mode}
+\item Navigate to \href{http://loopspace.github.io/LuaCanvas}{http://loopspace.github.io/LuaCanvas}
+\item Click on the checkbox in the lower right corner, labelled \verb+Graphics mode+
 \item The big area in the centre of the screen is where you can type code (we call this the \emph{editor} region).
-Clicking on the box labelled \texttt{Execute} will run your code.
+Clicking on the box labelled \verb+Execute+ will run your code.
 \end{enumerate}
 
 \section*{Printing Messages}
 
-To display a message, we use the \texttt{print} command.
+To display a message, we use the \verb+print+ command.
 Click in the editor region and type:
 
 \begin{verbatim}
 print("hello world")
 \end{verbatim}
 
-Now click \texttt{Execute} to run your program.
+Now click \verb+Execute+ to run your program.
 
-Click \texttt{Edit} to get back to the program.
+Click \verb+Edit+ to get back to the program.
 Try changing the message.
 
 \section*{Storing Information}
@@ -52,14 +64,14 @@ After the line above, type:
 print("Welcome to Hogwarts,", name)
 \end{verbatim}
 
-(Notice the comma after the \Verb+"+ and before \Verb+name+.)
+(Notice the comma after the \verb+"+ and before \verb+name+.)
 
 Try changing the name and see what happens.
 
 \section*{Strings and Numbers}
 
 When a computer stores information, it also remembers what \emph{type} of information it is. 
-A \emph{string} is a bit like a word; it is made out of letters and other characters, like \Verb+Harry Potter+.
+A \emph{string} is a bit like a word; it is made out of letters and other characters, like \verb+Harry Potter+.
 Another type of information is a \emph{number}.
 By knowing the type of information, the computer is able to do things with that information.
 
@@ -70,7 +82,7 @@ Following on from the above, type:
 print(name:lower())
 \end{verbatim}
 
-What do you think you would get if you changed \Verb+lower+ to \Verb+upper+?
+What do you think you would get if you changed \verb+lower+ to \verb+upper+?
 
 \bigskip
 
@@ -84,7 +96,7 @@ print(x+4)
 print(3*x)
 \end{verbatim}
 
-(The character between the \Verb+3+ and \Verb+x+ is an \emph{asterisk}, \Verb+*+.
+(The character between the \verb+3+ and \verb+x+ is an \emph{asterisk}, \verb+*+.
 What operation does it represent?)
 
 \section*{Getting Information}
@@ -100,13 +112,13 @@ print(x)
 \end{verbatim}
 
 Run this program.
-In the text box, type something and press \Verb+return+.
+In the text box, type something and press \verb+return+.
 Note that the program waits for you to enter something before carrying on.
 
 \section*{Planting Vegetables}
 
 We can put this together with our algebraic expressions to find out what our gardener would plant.
-Type the following, but in place of the \Verb+?+s put the right expression (remember to use \Verb+*+ for multiplication):
+Type the following, but in place of the \verb+?+s put the right expression (remember to use \verb+*+ for multiplication):
 
 \begin{verbatim}
 m = prompt("How many cabbages did you plant?")
@@ -118,10 +130,10 @@ print("Next year, you'll plant",?,"cabbages")
 
 \section*{Letters are Unknown Numbers}
 
-When writing the program, you didn't know what number \Verb+m+ would be.
-But you could still tell the computer what to do with it, and once the computer found out what \Verb+m+ was it could carry out your instructions.
+When writing the program, you didn't know what number \verb+m+ would be.
+But you could still tell the computer what to do with it, and once the computer found out what \verb+m+ was it could carry out your instructions.
 
-So in the program, \Verb+m+ stands for a number that \emph{we don't yet know}.
+So in the program, \verb+m+ stands for a number that \emph{we don't yet know}.
 But as it will become a known number, we can pretend that it is a number and do numbery things to it such as adding, subtracting, and multiplying.
 
 \section*{Do It Yourself}
