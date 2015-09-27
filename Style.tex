@@ -1,0 +1,87 @@
+\documentclass[
+  xhtml,%
+  use filename%
+]{internet}
+
+\loadcss{css/mathml}
+\loadcss{css/numberedeqns}
+\loadcss{css/article}
+\loadfullcss{https://fonts.googleapis.com/css?family=Raleway:300}
+\loadcss[all and (max-width: 767px)]{css/small}
+\loadcss[all and (min-width: 768px) and (max-width: 1024px)]{css/medium}
+\loadcss[all and (min-width: 1025px)]{css/large}
+\loadjs{js/setwidth}
+\loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
+
+\usepackage{hyperref}
+
+\title{Program with Style}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+With LuaCanvas, one can draw lots of different things on the screen and in different styles.
+This tutorial will take you through the various things that can be drawn and how they can be styled.
+Make sure you have \href{http://loopspace.github.io/LuaCanvas}{http://loopspace.github.io/LuaCanvas} open in a tab on your browser.
+
+\section{What You Can Draw}
+
+The default program is:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+end
+\end{verbatim}
+
+The key drawing line here is the second-to-last one: \verb+rect(20,20,100,100)+.
+This draws a rectangle with lower-left corner at \((20,20)\) with width \(100\) and height \(100\).
+You can experiment with changing those numbers to see what you get.
+Try working out how wide and high your drawing space is by altering the numbers (you will get different answers depending on how big your browser window is).
+
+You can also draw ellipses with the command \verb+ellipse+.
+Change the \verb+rect+ to \verb+ellipse+ to see what happens.
+Again, try changing the numbers.
+
+As well as the rectangle and ellipse shapes, you can draw lines.
+The command for drawing a line is:
+
+\begin{verbatim}
+line(sx,sy,tx,ty)
+\end{verbatim}
+
+where \((sx,sy)\) are the coordinates of the start of the line and \((tx,ty)\) are the coordinates of the end.
+For example
+
+\begin{verbatim}
+line(30,40,200,250)
+\end{verbatim}
+
+draws a line from \((30,40)\) to \((200,250)\).
+
+Using a combination of \verb+rect+, \verb+ellipse+, and \verb+line+ you can draw lots of things on the screen.
+
+There are currently two more commands that draw on the canvas: \verb+arc+ and \verb+bezier+.
+The \verb+arc+ command draws an arc with a radius, starting angle, and ending angle.
+The \verb+bezier+ command draws a special type of curve called a \emph{cubic b\'ezier} curve.
+It takes four sets of coordinates: it starts at the first coordinate, leaves in the direction of the second, and it ends at the fourth coordinate arriving from the direction of the third coordinate.
+For example:
+
+\begin{verbatim}
+arc(300,50,20,45,135)
+bezier(200,200,200,300,300,200,300,300)
+\end{verbatim}
+
+\section{Styling}
+
+\end{document}
