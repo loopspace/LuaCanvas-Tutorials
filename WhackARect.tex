@@ -1,7 +1,6 @@
 \documentclass[
   xhtml,%
-  %  use filename%
-  text
+  use filename%
 ]{internet}
 %\usepackage{fancyvrb}
 %\usepackage[scale=.8]{geometry}
@@ -14,6 +13,7 @@
 \loadcss[all and (min-width: 1025px)]{css/large}
 \loadjs{js/setwidth}
 \loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
+\SetLinkType{targetblank}
 
 \usepackage{hyperref}
 
@@ -22,9 +22,11 @@
 \begin{document}
 \maketitle
 
+\section{Getting Started}
+
 \begin{enumerate}
 \item Log on to a computer and launch a web browser (Chrome or IE should be installed, Chrome is marginally better).
-\item In the location bar, enter \href{http://loopspace.github.io/LuaCanvas}{http://loopspace.github.io/LuaCanvas}
+\item In the location bar, enter \href{http://luacanvas.mathforge.org}{http://luacanvas.mathforge.org}
 \item You should now have a webpage with some code in it, looking something like the following:
 
 \begin{verbatim}
@@ -41,9 +43,13 @@ function draw()
 end
 \end{verbatim}
 
-Click on the button marked \verb+Execute+ in the bottom left of your screen.
+Click on the button marked \verb+Execute+ in the bottom left of your screen to run the code.
+Click on \verb+Edit+ to get back to the code editor.
+\end{enumerate}
 
-\item The code works as follows.
+\section{What's Happening}
+
+The code works as follows.
 
 \begin{itemize}
 \item Everything between \verb+function setup()+ and the first \verb+end+ is run once.
@@ -75,7 +81,12 @@ It is \(100\) pixels in width and \(100\) pixels in height.
 \end{itemize}
 \end{itemize}
 
-\item One of the basic pieces of any computer program is the use of \emph{variables} to store information which can be later retrieved and used.
+\section{Variables}
+
+One of the basic pieces of any computer program is the use of \emph{variables} to store information which can be later retrieved and used.
+
+\subsection{Setting and Using Variables}
+
 The language we're using here is Lua and in Lua the syntax to set a variable is simply \verb+name = value+.
 For now, we'll say that a variable name is a string of letters, such as \verb+message+ or \verb+x+ (some other characters can be used, but definitely no spaces).
 The value can be quite varied, we'll start with a number.
@@ -84,17 +95,55 @@ In the \verb+setup+ function (ie between \verb+function setup()+ and the first \
 This sets the value of \verb+x+ to \verb+20+.
 So later on in the program, we can use \verb+x+ in place of \verb+20+.
 Let's do that by changing the first \verb+20+ in the \verb+rect+ line to \verb+x+ so that it reads \verb+rect(x,20,100,100)+.
+Our program should now look like the following:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  x = 20
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(x,20,100,100)
+end
+\end{verbatim}
+
 
 If we run the program we shouldn't spot any difference.
 But if we go back and change the \verb+x = 20+ to, say, \verb+x = 100+ then we should see a change.
 
-\item Do the same for the \(y\)--coordinate and the size of the rectangle.
+Do the same for the \(y\)--coordinate and the size of the rectangle.
 Use \verb+y+ for the \(y\)--coordinate and \verb+s+ for the size.
 We'll keep our rectangle square for now, so replace \emph{both} \(100\)s by \verb+s+.
 Try changing \verb+x+, \verb+y+, and \verb+s+ to see what you get.
 How big can they get without going off the screen?
 
-\item Now let's make it a bit more interesting by getting the computer to pick those values.
+Your program should now look something like the following (possibly with different values for the variables).
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  x = 20
+  y = 20
+  s = 100
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(x,y,s,s)
+end
+\end{verbatim}
+
+\subsection{Random Values}
+
+Now let's make it a bit more interesting by getting the computer to pick those values.
 We'll get it to pick them at random.
 To do this, we need a function that returns a random number in some range.
 Lua has one which is called \verb+math.random+.
@@ -123,15 +172,38 @@ function draw()
 end
 \end{verbatim}
 
-Each time you rerun your code, the square should change position (you can rerun your code by clicking \verb+Restart+).
+Each time you rerun your code, the square should change position (you can rerun your code quickly by clicking \verb+Restart+).
 
-\item The computer can also change the value of a variable.
+\subsection{Changing Values}
+
+The computer can also change the value of a variable.
 Inside the \verb+draw+ function, (after the \verb+rect+ line) put \(s = s - 1\).
 This tells the computer to set the \verb+s+ variable to whatever it currently is minus \(1\).
+Your code should now look like this:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  x = math.random(WIDTH-100)
+  y = math.random(HEIGHT-100)
+  s = 100
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(x,y,s,s)
+  s = s - 1
+end
+\end{verbatim}
 
 Now when you run your code you will see your square get smaller (and then bigger again!  Can you explain why?).
 
-\item A key component of any program is the use of \emph{conditionals}.
+\subsection{Conditionals}
+
+A key component of any program is the use of \emph{conditionals}.
 These say ``If a condition is true, do something'', meaning that we do an action only under certain conditions.
 Let's say that when our square gets to zero size, we reset it.
 So after the line \verb+s = s - 1+ write:
@@ -146,18 +218,46 @@ end
 
 (You can use the standard copy-and-paste tools to copy the middle bit from earlier in the code.)
 
+Your code should now look like the following.
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  x = math.random(WIDTH-100)
+  y = math.random(HEIGHT-100)
+  s = 100
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(x,y,s,s)
+  s = s - 1
+  if s == 0 then
+    x = math.random(WIDTH-100)
+    y = math.random(HEIGHT-100)
+    s = 100
+  end
+end
+\end{verbatim}
+
+
 Now you should see that the square vanishes and reappears somewhere else.
 
 (You may want to change the \emph{style} parameters; feel free to do so.)
 
-\item So far so good.
+\section{Interaction}
+
+So far so good.
 Let's make a game out of this.
 To do that, we need to make it interactive.
 
 If you click on the screen, nothing happens.
 But the computer notices that click and can do something with it if we tell it to.
 To make it notice the click, we need to define a new \emph{function}.
-So at the end of your code, type:
+So at the very end of your code, type:
 
 \begin{verbatim}
 function touched(t)
@@ -193,7 +293,49 @@ end -- end the function
 Now when you run it, you can try to click in a square.
 If you do so, it will vanish and return in a new place.
 
-\item This isn't quite a finished game.
+Your full code should look something like the following:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  x = math.random(WIDTH-100)
+  y = math.random(HEIGHT-100)
+  s = 100
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(x,y,s,s)
+  s = s - 1
+  if s == 0 then
+    x = math.random(WIDTH-100)
+    y = math.random(HEIGHT-100)
+    s = 100
+  end
+end
+
+function touched(t)
+    if t.state == "BEGAN" then
+        if t.x > x
+            and t.x < x + s
+            and t.y > y
+            and t.y < y + s
+            then
+              x = math.random(WIDTH-100)
+              y = math.random(HEIGHT-100)
+              s = 100
+        end
+    end
+end
+\end{verbatim}
+
+
+\section{Going Further}
+
+This isn't quite a finished game.
 We should keep score as well.
 You have most of the pieces for doing this.
 The only missing piece is to be able to display the contents of a variable.
@@ -208,5 +350,4 @@ It's up to you!
                 
 
 
-\end{enumerate}
 \end{document}

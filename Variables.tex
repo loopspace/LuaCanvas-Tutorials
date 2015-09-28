@@ -1,7 +1,6 @@
 \documentclass[
   xhtml,%
-  %  use filename%
-  text
+  use filename%
 ]{internet}
 \loadcss{css/mathml}
 \loadcss{css/numberedeqns}
@@ -12,6 +11,7 @@
 \loadcss[all and (min-width: 1025px)]{css/large}
 \loadjs{js/setwidth}
 \loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
+\SetLinkType{targetblank}
 
 
 \usepackage{hyperref}
@@ -24,7 +24,7 @@
 
 \begin{enumerate}
 \item Log on to the computer and launch a web browser
-\item Navigate to \href{http://loopspace.github.io/LuaCanvas}{http://loopspace.github.io/LuaCanvas}
+\item Navigate to \href{http://luacanvas.mathforge.org}{http://luacanvas.mathforge.org} 
 \item Click on the checkbox in the lower right corner, labelled \verb+Graphics mode+
 \item The big area in the centre of the screen is where you can type code (we call this the \emph{editor} region).
 Clicking on the box labelled \verb+Execute+ will run your code.

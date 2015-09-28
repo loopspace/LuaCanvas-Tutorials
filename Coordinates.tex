@@ -1,7 +1,6 @@
 \documentclass[
   xhtml,%
-  %  use filename%
-  text
+  use filename%
 ]{internet}
 %\usepackage{fancyvrb}
 %\usepackage[scale=.8]{geometry}
@@ -14,6 +13,7 @@
 \loadcss[all and (min-width: 1025px)]{css/large}
 \loadjs{js/setwidth}
 \loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
+\SetLinkType{targetblank}
 
 
 \usepackage{hyperref}
@@ -21,11 +21,11 @@
 \title{Using Coordinates}
 \begin{document}
 \maketitle
-\section*{Getting Started}
+\section{Getting Started}
 
 \begin{enumerate}
 \item Log on to the computer and launch a web browser
-\item Navigate to \href{http://loopspace.github.io/LuaCanvas?project=Grid}{http://loopspace.github.io/LuaCanvas?project=Grid}
+\item Navigate to \href{http://luacanvas.mathforge.org?project=Grid}{http://luacanvas.mathforge.org?project=Grid}
 \item The big area in the centre of the screen is where you can type code (we call this the \emph{editor} region).
 Clicking on the box labelled \verb+Execute+ will run your code.
 When your code is running, clicking on the box labelled \verb+Edit+ will get you back to the editor.
@@ -34,7 +34,7 @@ When your code is running, clicking on the box labelled \verb+Edit+ will get you
 Try running it, you should see a coordinate grid drawn on the screen.
 \end{enumerate}
 
-\section*{Coordinates}
+\section{Coordinates}
 
 You can use coordinates to refer to points on the screen.
 Just as on paper, a coordinate like \((3,4)\) means \(3\) units left and \(4\) units up.
@@ -61,7 +61,7 @@ function setup()
 end
 \end{verbatim}
 
-\section*{Drawing on the Screen}
+\section{Drawing on the Screen}
 
 To draw on the screen we need to put some instructions somewhere between the line \verb+function draw()+ and the \verb+end+ at the end of the code.
 
@@ -108,7 +108,7 @@ function draw()
 end
 \end{verbatim}
 
-\section*{Repeating Things}
+\section{Repeating Things}
 
 Writing things like \verb+line(c(1,2),c(10,2))+ lots of times gets a bit repetitive.
 Computers are supposed to alleviate things like that.
@@ -191,7 +191,7 @@ function draw()
 end
 \end{verbatim}
 
-\section*{Repeating the Repetition}
+\section{Repeating the Repetition}
 
 Lists can be \emph{nested}, meaning that we can form lists of lists.
 As can for-loops.
@@ -251,5 +251,64 @@ function draw()
   end
 end
 \end{verbatim}
+
+\section{A Dash of Style}
+
+We can go further and change the colours of our lines.
+To do this, we need to store a colour together with each list of coordinates.
+To distinguish this from the list of coordinates, we give the colour a \emph{key}.
+If we want to make the first family of lines, say, yellow we change the list to read:
+
+\begin{verbatim}
+{
+   colour = colour(255,255,0),
+   c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+},
+\end{verbatim}
+
+When we work with the list of coordinates, we need to use that colour.
+To do this, our loop needs to read:
+
+\begin{verbatim}
+for j=1,#points do
+  stroke(points[j].colour)
+  for k=2,#points[j] do
+    line(points[j][k-1],points[j][k])
+  end
+end
+\end{verbatim}
+
+Our full code might now look like the following:
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  c=coordinate
+  points={
+    {
+       colour = colour(255,255,0),
+       c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+    },
+    {
+       colour = colour(255,0,255),
+       c(-1,2), c(-10,2), c(-10,7), c(-1,7), c(-1,2)
+    }
+  }
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  stroke(150,40,200)
+  strokeWidth(5)
+  for j=1,#points do
+    stroke(points[j].colour)
+    for k=2,#points[j] do
+      line(points[j][k-1],points[j][k])
+    end
+  end
+end
+\end{verbatim}
+
 
 \end{document}

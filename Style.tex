@@ -12,7 +12,7 @@
 \loadcss[all and (min-width: 1025px)]{css/large}
 \loadjs{js/setwidth}
 \loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
-
+\SetLinkType{targetblank}
 \usepackage{hyperref}
 
 \title{Program with Style}
@@ -24,7 +24,7 @@
 
 With LuaCanvas, one can draw lots of different things on the screen and in different styles.
 This tutorial will take you through the various things that can be drawn and how they can be styled.
-Make sure you have \href{http://loopspace.github.io/LuaCanvas}{http://loopspace.github.io/LuaCanvas} open in a tab on your browser.
+Make sure you have \href{http://luacanvas.mathforge.org}{http://luacanvas.mathforge.org} open in a tab on your browser.
 
 \section{What You Can Draw}
 
@@ -60,28 +60,151 @@ The command for drawing a line is:
 line(sx,sy,tx,ty)
 \end{verbatim}
 
-where \((sx,sy)\) are the coordinates of the start of the line and \((tx,ty)\) are the coordinates of the end.
+\noindent where \((sx,sy)\) are the coordinates of the start of the line and \((tx,ty)\) are the coordinates of the end.
+At the start, \((0,0)\) is the lower left corner of your drawing area.
 For example
 
 \begin{verbatim}
 line(30,40,200,250)
 \end{verbatim}
 
-draws a line from \((30,40)\) to \((200,250)\).
+\noindent draws a line from \((30,40)\) to \((200,250)\).
 
 Using a combination of \verb+rect+, \verb+ellipse+, and \verb+line+ you can draw lots of things on the screen.
 
-There are currently two more commands that draw on the canvas: \verb+arc+ and \verb+bezier+.
+There are currently\begin{marginpar}There are plans to implement more complicated shapes.\end{marginpar} two more commands that draw on the canvas: \verb+arc+ and \verb+bezier+.
 The \verb+arc+ command draws an arc with a radius, starting angle, and ending angle.
 The \verb+bezier+ command draws a special type of curve called a \emph{cubic b\'ezier} curve.
 It takes four sets of coordinates: it starts at the first coordinate, leaves in the direction of the second, and it ends at the fourth coordinate arriving from the direction of the third coordinate.
-For example:
+To see an example, try:
 
 \begin{verbatim}
 arc(300,50,20,45,135)
 bezier(200,200,200,300,300,200,300,300)
 \end{verbatim}
 
+So we might have a project currently looking like:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+  ellipse(50,200,30,20)
+  line(300,50,400,100)
+  arc(250,300,20,45,135)
+  bezier(500,200,500,100,600,200,600,100)
+end
+\end{verbatim}
+
 \section{Styling}
+
+Styling commands change how the drawing appears.
+Many involve colours, so we'll start with a word about colour.
+
+\subsection{Colours}
+
+Colours in LuaCanvas are specified by mixing red, green, and blue.
+The amount of each mixed in is specified by giving a number between \(0\) (for none) to \(255\) (for maximum).
+Thus \((0,0,0)\) is black and \((255,255,255)\) is white.
+The fourth number is called the \emph{alpha} and determines how transparent the colour will be.
+A \(0\) means that the colour is fully transparent, while \(255\) means that it is fully opaque.
+In normal blending mode, a transparent colour won't be seen while an opaque one will obscure everything underneath it.
+(It is possible to change this behaviour by changing the \verb+blendMode+.)
+
+Sometimes it is useful to consider a colour as a single thing rather than having to specify its ingredients each time.
+The command \verb+colour+ defines a ``colour object'' that can be used wherever a colour can be specified.
+This means that you can save a colour into a variable for using time and again.
+For example:
+
+\begin{verbatim}
+col = colour(255,255,0,255)
+\end{verbatim}
+
+\noindent stores a yellow colour in the variable \verb+col+.
+When specifying a colour, you can use the red, green, blue, and alpha as above; but you can also use a colour name from the list of \href{https://en.wikipedia.org/wiki/Web_colors#X11_color_names}{SVG names} or \href{http://raebear.net/comp/emacscolors.html}{X11 names} (names are case-insensitive and can have spaces, so \verb+colour("Aqua Blue")+ and \verb+colour("aquablue")+ are the same thing).
+For example:
+
+\begin{verbatim}
+col = colour("Yellow")
+\end{verbatim}
+
+Try adding some different colours to your project.
+For example:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+  fill(colour("Teal"))
+  ellipse(50,200,30,20)
+  stroke(colour("Yellow"))
+  line(300,50,400,100)
+  arc(250,300,20,45,135)
+  bezier(500,200,500,100,600,200,600,100)
+end
+\end{verbatim}
+
+\subsection{Styling Commands}
+
+There are a few styling commands which change how things appear on the screen.
+The key thing to remember is that the commands affect all commands that appear after them.
+Also, whatever is in effect at the end of the \verb+draw+ function will be in place at the start as well.
+
+You can read the full description of the commands on the documentation.
+In brief, they are:
+
+\begin{itemize}
+\item \verb+stroke(colour)+: sets the colour for drawing lines (and outlines of shapes).
+\item \verb+fill(colour)+: sets the colour for filling shapes.
+\item \verb+strokeWidth(w)+: sets the width of the lines (and outlines).
+\item \verb+noStroke()+: disables drawing lines (and outlines).
+\item \verb+noFill()+: disables filling shapes.
+\end{itemize}
+
+Two more useful commands are \verb+pushStyle()+ and \verb+popStyle()+.
+The first of these saves the current style and the second restores the corresponding saved style.
+For example:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(255,0,0)
+  strokeWidth(10)
+  rect(20,20,100,100) -- outlined in red
+  pushStyle() -- save the current style
+  fill(colour("Teal"))
+  ellipse(50,200,30,20) -- still in red
+  stroke(colour("Yellow"))
+  line(300,50,400,100) -- drawn in yellow
+  popStyle() -- restore the old style
+  arc(250,300,20,45,135) -- drawn in red
+  bezier(500,200,500,100,600,200,600,100)
+end
+\end{verbatim}
+
+There's also \verb+resetStyle()+ which resets the style back to the default.
+
+Now try making different shapes in different styles on the screen.
+If you have already worked through the \href{WhackARect.xhtml}{Whack A Rectangle} tutorial, you could try applying different styles to the rectangles that appear.
+If you are feeling particularly adventurous, try using some random numbers in your colours.
 
 \end{document}
