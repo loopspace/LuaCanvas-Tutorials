@@ -1,0 +1,245 @@
+\documentclass[
+  xhtml,%
+  use filename%
+]{internet}
+%\usepackage{fancyvrb}
+%\usepackage[scale=.8]{geometry}
+\usepackage{tutorial}
+\usepackage{hyperref}
+
+\newtheorem{question}{Question}
+
+\title{What's Your Angle?}
+
+\begin{document}
+\maketitle
+\section{Introducing Logo}
+
+\ \verb+Logo+ is a computer programming language built around giving instructions to a \emph{turtle} (can be either robotic or virtual).
+You tell the turtle where to move, and as it moves then it draws a line to show its path.
+The instructions are given as if telling the turtle where to go next.
+So you might say ``Go forward \(50\) steps'' or ``Turn left \(30^\circ\)''.
+Using these, and similar, commands you can get the turtle to draw quite intricate patterns.
+
+There are a few other commands relating to the line that it draws.
+You can change the colour and width of the line.
+You can tell it to skip a section of the line.
+In some implementations, you can tell it to \emph{fill} a shape that it has drawn (that isn't a feature of this version but you can find online \verb+Logo+ implementations to play with).
+
+\section{Moving Your Turtle}
+
+\begin{enumerate}
+\item Go to \href{http://luacanvas.mathforge.org?project=Turtle}{http://luacanvas.mathforge.org?project=Turtle}
+\item To make the turtle draw something, you give it the instructions inside the \verb+setup+ function.
+It will then draw what you tell it when you run the code.
+
+Your turtle is called just \verb+turtle+.
+If you want to change its name, replace the lowercase \verb+turtle+ in the line \verb+turtle = Turtle()+ with your chosen name.
+You can only use letters, and you can't use spaces (but capital letters are fine).
+So \verb+Fred = Turtle()+ is okay.
+If you change the name, you have to use that name exactly as you originally wrote it.
+In this tutorial, we will assume that we haven't changed the name.
+
+The commands are:
+\begin{itemize}
+\item To make the turtle go forwards, \verb+turtle:forward(30)+.
+
+Note the colon, \verb+:+, between the \verb+turtle+ and \verb+forward+.
+The number, in this case \(30\), tells it how much to go forwards.
+The units are pixels (the tiny dots) on the screen.
+
+The number can be negative, but \dots
+
+\item To make the turtle go backwards, \verb+turtle:backward(30)+.
+
+\item To turn the turtle to its left, \verb+turtle:left(30)+.
+
+The key here is that the turn is from the point of view of the turtle.
+It will turn to its left by \(30^\circ\).
+
+The number can be negative, but \dots
+
+\item To turn the turtle to its right, \verb+turtle:right(30)+.
+
+\item To stop it drawing, use \verb+turtle:penUp()+.
+
+Note the parentheses at the end.
+This means that when the turtle moves it will not leave a trail behind it.
+
+\item To resume drawing, use \verb+turtle:penDown()+.
+
+\item To change the colour, use \verb+turtle:setPenColour(127,245,200)+ or \verb+turtle:setPenColour("blue")+.
+
+For more on how to specify a colour, see the \href{Style.xhtml}{Programming with Style} tutorial in the \emph{Programming} section of the tutorials.
+
+\item To change the width, use \verb+turtle:setPenWidth(3)+.
+
+\end{itemize}
+
+\item Put some commands in the code to see what happens.
+For example, so that the start of your code looks like this:
+
+\begin{verbatim}
+function setup()
+  turtle = Turtle()
+  turtle:forward(100)
+  turtle:right(60)
+  turtle:forward(30)
+  turtle:left(100)
+  turtle:forward(50)
+  protractor = Protractor()
+  ruler = Ruler()
+end
+\end{verbatim}
+
+\item When you run this code, the ``turtle'' will draw the lines you have told it to.
+You will notice two other shapes on the screen (you may have noticed them in the code) which look a bit like a protractor and a ruler.
+They are.
+You can drag them around the screen and turn them to make measurements to plan your drawing.
+They aren't labelled, but the marks are \(5^\circ\) on the protractor and \(5\) pixels on the ruler.
+To move them, click near the middle of the shape and drag it.
+To rotate them, click near the outside of the shape and drag it round.
+
+\end{enumerate}
+
+\section{A Regular Shape}
+
+In a regular shape, all the sides have the same length and all the angles are the same.
+You can easily make the turtle draw a regular shape by alternating a turn of a fixed angle with a forward of a fixed distance.
+Written out in full, this would have a lot of repetition and would be tedious to change to make a new shape.
+So we use a \emph{loop} to make it more concise.
+
+To repeat something a set number of times, we put it in a \verb+for+ loop, like this:
+
+\begin{verbatim}
+for k=1,4 do
+  turtle:forward(100)
+  turtle:turn(50)
+end
+\end{verbatim}
+
+This repeats the instructions a total of \(4\) times.
+The start of your code should look like this:
+
+\begin{verbatim}
+function setup()
+  turtle = Turtle()
+  for k = 1,4 do
+    turtle:forward(100)
+    turtle:right(50)
+  end
+  protractor = Protractor()
+  ruler = Ruler()
+end
+\end{verbatim}
+
+
+This shape doesn't join up.
+The first goal is to find an angle and a number of repetitions that do make a closed, simple shape.
+``Closed'' means that the lines join up, ``simple'' means that the lines don't cross each other.
+
+By changing the \verb+4+ in the line \verb+for k=1,4 do+ then we change the number of repetitions.
+Changing the \verb+50+ changes the angle.
+If your drawing is too big for the screen, change the \verb+100+ to something smaller.
+
+Once you have found an angle and a number of repetitions that works, make sure that your number of repetitions is \emph{minimal}.
+That means that if you reduce the number of repetitions further then the shape will no longer close up.
+It will also mean that the turtle ends up at exactly the same place and in the same direction as it started.
+
+\begin{question}
+What is the relationship between the number of repetitions and the angle that the turtle turns each time?
+
+Find some other angles and number of repetitions that also draw closed, simple shapes.
+
+What is the general relationship?
+\end{question}
+
+\begin{question}
+What happens if we no longer insist that the shape be \emph{simple}?
+So we allow the lines to cross existing lines, but the turtle must end up back where it started and facing the same way as it started.
+\end{question}
+
+\section{Irregular Shapes}
+
+In an irregular shape, we no longer insist that the angles and side lengths be the same.
+Let us, though, insist that the shape be still a closed, simple shape.
+
+Draw a closed, simple shape that only involves \emph{left} turns (i.e., left turns with a positive angle).
+
+To draw your shape, start with a few instructions with turns and forwards, then run your code to see where your turtle ends up.
+Keep adding some more instructions and running your code to see what happens.
+You may find it useful to use the ruler and protractor, particularly when figuring out the last ``joining up'' line.
+
+\begin{question}
+What do you spot about the angles that you turn?
+
+\end{question}
+
+\emph{Hint: what do you get if you add them up?}
+
+\begin{question}
+Now include some right turns as well (but keep the shape simple: no intersections).
+What do you notice about the angles now?
+\end{question}
+
+\emph{Hint: treat the left and right turns separately.}
+
+\section{Spirals}
+
+There are some additional drawing commands that can be used to make nice spirals.
+
+\begin{itemize}
+\item \verb+turtle:toPosition(20,30)+ moves the turtle to the coordinate \((20,30)\) (with origin in the centre of the screen).
+If the turtle's pen is down, a line will be drawn as it moves.
+
+\item \verb+turtle:toRelativePosition(20,30)+ moves the turtle to the
+coordinate \((20,30)\) relative to its current position.
+That is, it moves it \(20\) pixels across and \(30\) up.
+
+\item \verb+turtle:toAngle(50)+ turns the turtle so that it makes an angle of \(50^\circ\) from the horizontal, measured anticlockwise.
+
+\item \verb+turtle:toRelativeAngle(50)+ turns the turtle so that it makes an angle of \(50^\circ\) from the line joining it to its original position at the centre of the screen.
+\end{itemize}
+
+Here are some spirals to get you started.
+Pick one and make some changes to the code to experiment with.
+
+\begin{enumerate}
+
+\item You can get a nice spiral with the following instructions:
+
+\begin{verbatim}
+turtle:penUp()
+turtle:toPosition(10,0)
+turtle:penDown()
+for k = 1,100 do
+  turtle:forward(10)
+  turtle:toRelativeAngle(90)
+end
+\end{verbatim}
+
+\item The \emph{Fibonacci Sequence} leads to a nice spiral:
+
+\begin{verbatim}
+local a,b = 5,5
+turtle:right(135)
+for k=1,10 do
+  turtle:forward(a)
+  turtle:left(90)
+  a,b = b,a+b
+end
+\end{verbatim}
+
+\item Spirals can go inwards as well as outwards:
+
+\begin{verbatim}
+local s = 100
+for k=1,30 do
+  turtle:forward(s)
+  turtle:left(60)
+  s = .9*s
+end
+\end{verbatim}
+\end{enumerate}
+
+\end{document}
