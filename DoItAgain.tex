@@ -1,0 +1,614 @@
+\documentclass[
+  xhtml,%
+  use filename%
+]{internet}
+
+\usepackage{tutorial}
+\usepackage{hyperref}
+
+\title{Do It Again \dots\ But Better}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+One thing that computers excel at is repetition.
+Ask a computer to write out ``I must not let my dog eat my homework.'' a hundred times and it won't bat an eyelid\begin{marginpar}If it had eyelids, that is.\end{marginpar}.
+
+There are a variety of ways of getting a computer to do something several times.
+Which is right depends on exactly what you want to achieve.
+We'll use an example where we draw lots of rectangles on the screen.
+
+The one method that is almost never right is to just write out everything yourself.
+
+\section{For Loops}
+
+The most straightforward is the \verb+for+ loop.
+Let's suppose we want to draw a rectangle \(20\) times.
+The \verb+for+ loop starts like this:
+
+\begin{verbatim}
+for k=1,20 do
+\end{verbatim}
+
+\noindent Then we put whatever it is we want to repeat, in this case the command to draw a rectangle.
+To indicate where we want the repetition to end, we simply write \verb+end+.
+So our \verb+for+ loop will look like:
+
+\begin{verbatim}
+for k=1,20 do
+  rect(20,20,100,100)
+end
+\end{verbatim}
+
+\noindent and our whole code should now look like:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  for k=1,20 do
+    rect(20,20,100,100)
+  end
+end
+\end{verbatim}
+
+Now run this code.
+You shouldn't notice any difference from the original code.
+That's because you are drawing the \emph{same} rectangle \(20\) times.
+This is rarely what you want to do, more often you will want to do \emph{almost} the same thing several times with little changes between each time.
+
+Again, there are a number of ways to achieve this.
+In a \verb+for+ loop, we have a special variable which counts which time through the repetition we are on.
+In our example, this variable is \verb+k+ (we get to choose the name: if we wrote \verb+for n=1,25 do+ then it would be \verb+n+).
+We can use this inside the loop to change what happens.
+For example, to space out the rectangles we could do:
+
+\begin{verbatim}
+for k=1,20 do
+  rect(20*k,20,100,100)
+end
+\end{verbatim}
+
+Full code is now:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  for k=1,20 do
+    rect(20*k,20,100,100)
+  end
+end
+\end{verbatim}
+
+Now we should see something different.
+The first rectangle is drawn with lower left corner at \((20,20)\), the second is at \((40,20)\), the third at \((60,20)\) and so on.
+We can do more if we like:
+
+\begin{verbatim}
+for k=1,20 do
+  rect(20*k,20+10*k,100-k,100-k)
+end
+\end{verbatim}
+
+We can also be a bit more adventurous with how we create the loop.
+We don't have to start at \(1\).
+It might be more natural to start at, say, \(5\):
+
+\begin{verbatim}
+for k=5,20 do
+  rect(20*k,20+10*k,100-k,100-k)
+end
+\end{verbatim}
+
+(The numbers also don't \emph{have} to be whole numbers, but it works best if they are.)
+
+We also don't have to go up in \(1\)s.
+If we put a third number in the first line then that is the \emph{step value}.
+For example,
+
+\begin{verbatim}
+for k=5,20,5 do
+  rect(20*k,20+10*k,100-k,100-k)
+end
+\end{verbatim}
+
+\noindent goes up in \(5\)s.
+So it will do four repetitions with \(k=5\), \(10\), \(15\), and ending at \(20\).
+
+Lastly, we could use a variable in place of any of the numbers.
+So if we've already defined, say, \(n=20\) we could write:
+
+\begin{verbatim}
+for k=5,n do
+  rect(20*k,20+10*k,100-k,100-k)
+end
+\end{verbatim}
+
+In conclusion, \verb+for+ loops are best for when the change from one repetition to the next is regular and where we know in advance how many times we want to repeat the code.
+
+
+\section{While Loops}
+
+A \verb+while+ loop is a slightly more free-form version of a \verb+for+ loop.
+Suppose we want to draw rectangles all the way across the screen.
+The width of the screen is contained in a variable \verb+WIDTH+ so we could work out how many rectangles are needed to get across and then draw the right number using a \verb+for+ loop.
+Much easier is to say ``Carry on drawing until we reach the edge of the screen.''.
+For this, we use a \verb+while+ loop.
+
+In a \verb+while+ loop, we need a \emph{test} that we can check each time round.
+While it remains true, the loop keeps repeating.
+At some point, the condition should fail and then the loop stops.
+
+Let's use a similar example.
+We're drawing rectangles across the screen starting at \(20\) and continuing until we reach the right-hand edge.
+Before the loop starts, we need to define our starting point.
+Then the loop starts.
+Thus we start with:
+
+\begin{verbatim}
+x = 20
+while x < WIDTH do
+\end{verbatim}
+
+\noindent As with everything in Lua, the loop ends with \verb+end+.
+
+Inside the loop we put our drawing command.
+We also change the value of \verb+x+ to match what we want to do.
+
+\begin{verbatim}
+x = 20
+while x < WIDTH do
+  rect(x,20+10,100,100)
+  x = x + 20
+end
+\end{verbatim}
+
+It is important that the loop does eventually end.
+So we do have to ensure that \verb+x+ eventually will be bigger than \verb+WIDTH+.
+
+Our full code is:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  x = 20
+  while x < WIDTH do
+    rect(x,20,100,100)
+    x = x + 20
+  end
+end
+\end{verbatim}
+
+Again, we can be more adventurous and change more than just the \(x\) coordinate of the rectangles.
+
+In conclusion, \verb+while+ loops are best for when the change from one repetition to the next is regular and where we don't necessarily know in advance how many times we want to repeat the code but know when we want to stop.
+
+\section{Repeating From a List}
+
+The last way for repeating stuff is the most flexible.
+This method involves \emph{lists}.
+
+\subsection{Lists}
+
+Suppose we want to draw some rectangles at a variety of places on the screen but there is no particular structure to the places.
+In fact, let's suppose that we want to draw a rectangle whenever the user clicks on the screen and we want to place the rectangle at that place.
+To do this, we need to maintain a \emph{list} of the places of those rectangles.
+
+Lists are a common feature of programming languages.
+There are a few different words used to refer to them, the most common are \emph{arrays} and \emph{tables}.
+In Lua, they are called \emph{tables}.
+
+We create an empty list like this:
+
+\begin{verbatim}
+rectangles = {}
+\end{verbatim}
+
+Let's put this in the \verb+setup+ function, so our code should look like:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  rectangles = {}
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+end
+\end{verbatim}
+
+Every time the user clicks on the screen, we need to add the coordinates of where they touch to this list.
+The code to add to a list is the function \verb+table.insert()+.
+We use it as follows:
+
+\begin{verbatim}
+table.insert(rectangles,coordinate(x,y))
+\end{verbatim}
+
+\noindent So the first thing is the table itself, the second is what we want to add to it.
+LuaCanvas contains a special command \verb+coordinate+ for referring to coordinates.
+The \verb+x+ and \verb+y+ are the \(x\) and \(y\) values of the coordinate.
+We want to get these from the user's mouse click.
+We get the information from mouse clicks by a special function called \verb+touched+.
+Our code so far is:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  rectangles = {}
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(rectangles,coordinate(t.x,t.y))
+  end
+end
+\end{verbatim}
+
+We'll look at what's going on in the \verb+touched+ function in more detail in another tutorial.
+In brief, the variable \verb+t+ contains information about each mouse click.
+A mouse ``event'' comprises three stages: the mouse button being pressed down, then the mouse might move, before finally the mouse button is released.
+We figure out which is happening via the \verb+t.state+ variable.
+We're only going to add our coordinate when the mouse button is released.
+The coordinates of the mouse when the button is released are contained in \verb+t.x+ and \verb+t.y+ so we use those to add to our list.
+
+\subsection{Doing the Repetition}
+
+Every time you click on the screen you add a coordinate to the list.
+Our list is growing, but at the moment we're not doing a lot with it.
+We want to draw a rectangle for each coordinate.
+
+This involves a special kind of loop.
+It's a bit like a \verb+for+ loop, and indeed it starts with the word \verb+for+.
+Its starting code is:
+
+\begin{verbatim}
+for k,v in ipairs(rectangles) do
+\end{verbatim}
+
+\noindent and by now you should know how to end the loop!
+
+What this does is the following.
+It goes through the list of coordinates contained in the table \verb+rectangles+ and executes the code each time.
+Inside the loop, the variable \verb+v+ is set to each coordinate in turn.
+The variable \verb+k+ keeps track of the number of that coordinate in the list.
+
+So if our list consisted of the coordinates \((20,30)\), \((10,50)\), and \((60,100)\) then our code in the loop would be run three times.
+The first time then we would have \verb+k+ as \verb+1+ and \verb+v+ as \verb+coordinate(20,30)+.
+The second time we would have \verb+k+ as \verb+2+ and \verb+v+ as \verb+coordinate(10,50)+.
+So inside the loop we can use \verb+k+ and \verb+v+.
+For example,
+
+\begin{verbatim}
+for k,v in ipairs(rectangles) do
+  rect(v,100)
+end
+\end{verbatim}
+
+Note that the \verb+rect+ is quite flexible.
+You can give it the coordinates and size as in \verb+rect(20,20,100,100)+ but if the first bit is a \verb+coordinate+ then it understands that that coordinate should be used as the \(x\) and \(y\).
+Also, if you miss out the height it will assume you want it to be a square. 
+
+Our full code is now:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  parameter.watch("Number of rectangles","#rectangles")
+  rectangles = {}
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  for k,v in ipairs(rectangles) do
+    rect(v,100)
+  end
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(rectangles,coordinate(t.x,t.y))
+  end
+end
+\end{verbatim}
+
+\subsection{Going Further}
+
+We can get more intricate.
+Lists can contain anything, including other lists.
+So as well as our coordinate we can add some other information.
+Let's define a random colour function:
+
+\begin{verbatim}
+function randomColour()
+  local r = math.random(255)
+  local g = math.random(255)
+  local b = math.random(255)
+  return colour(r,g,b)
+end
+\end{verbatim}
+
+\noindent and change our \verb+touched+ function to:
+
+\begin{verbatim}
+function touched(t)
+  if t.state == ENDED then
+    table.insert(rectangles,{coordinate(t.x,t.y),colour = randomColour(),size = 100})
+  end
+end
+\end{verbatim}
+
+Now we need to use this information when drawing the rectangles.
+In our loop, \verb+v+ refers to the current item in the \verb+rectangles+ loop.
+This is now itself a list.
+We need to get out the coordinate, the colour, and the size from this list.
+
+Let's look at how the list is constructed:
+
+\begin{verbatim}
+{coordinate(t.x,t.y),colour = randomColour(),size = 100}
+\end{verbatim}
+
+For the sake of this discussion, we'll give this table a name:
+
+\begin{verbatim}
+tbl = {coordinate(t.x,t.y),colour = randomColour(),size = 100}
+\end{verbatim}
+
+
+Lists (that is, \emph{tables}) in Lua are quite versatile.
+They have an ordered part and an unordered part.
+We get at the pieces in the ordered part by their position.
+To get the pieces in the unordered part, we need \emph{keys}.
+
+In this list, we have a bit of both.
+The \verb+size = 100+ stores the value \verb+100+ in the \emph{unordered} part.
+The \verb+size+ is the key.
+To get this value back, we write \verb+tbl.size+.
+So that starts with the table name (in this case \verb+tbl+), then a dot, then the key name (\verb+size+).
+An alternative notation is \verb+tbl["size"]+ (this is the only way if the key has, for example, spaces in it).
+
+To get the ordered part, we use square brackets.
+As the value \verb+coordinate(t.x,t.y)+ is by itself (i.e.\ it doesn't have a key), it goes in the ordered part of the table.
+It's the first item, so it has positive \(1\).
+To get it back, we write \verb+tbl[1]+.
+
+So to draw this rectangle, we can write:
+
+\begin{verbatim}
+tbl = {coordinate(t.x,t.y),colour = randomColour(),size = 100}
+fill(tbl.colour)
+rect(tbl[1],tbl.size)
+\end{verbatim}
+
+Putting this into our code, we have:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  parameter.watch("Number of rectangles","#rectangles")
+  rectangles = {}
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  for k,v in ipairs(rectangles) do
+    fill(v.colour)
+    rect(v[1],v.size)
+  end
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(rectangles,{coordinate(t.x,t.y),colour = randomColour(),size = 100})
+  end
+end
+
+function randomColour()
+  local r = math.random(255)
+  local g = math.random(255)
+  local b = math.random(255)
+  return colour(r,g,b)
+end
+\end{verbatim}
+
+\subsection{Removing From a List}
+
+As a finale, let's adjust the size of the rectangles and remove them when their size reaches zero.
+To reduce the size of each rectangle, as we draw it we also subtract one from its size:
+
+\begin{verbatim}
+v.size = v.size - 1
+\end{verbatim}
+
+Then we have to check if the size is \(0\) and remove it from the table.
+Now, it's a bad idea to alter a list when we're in the middle of a loop, so what we do is make a new list containing those rectangles we want to remove from our existing list.
+Then when we've finished drawing our rectangles we go through this new list and remove the corresponding rectangles from our original list.
+
+\begin{verbatim}
+del = {}
+for k,v in ipairs(rectangles) do
+  fill(v.colour)
+  rect(v[1],v.size)
+  v.size = v.size - 1
+  if v.size == 0 then
+    table.insert(del,1,k)
+  end
+end
+\end{verbatim}
+
+So we start by making a new empty table, \verb+del+.
+Then during our list we reduce the size by \(1\) and then test to see if the size is now \(0\).
+If it is, we add the \emph{position} in the list of this rectangle to our list to delete.
+Before, the \verb+table.insert+ command looked like \verb+table.insert(tbl,item)+.
+In this case, it looks like \verb+table.insert(tbl,position,item)+.
+The first version adds the item to the end of the list.
+The new version adds it in the specified position, shifting the rest of the list downwards.
+In this case we're using position \(1\) so it adds the new item at the front of the list.
+
+The reason for doing this is to do with how we delete things from our list.
+The removal code is:
+
+\begin{verbatim}
+for k,v in ipairs(del) do
+  table.remove(rectangles,v)
+end
+\end{verbatim}
+
+This goes through the \verb+del+ list.
+Remember that this contains the rectangles that we want to remove.
+So each time through this list, \verb+v+ is the \emph{position} in the \verb+rectangles+ list of a rectangle that we want to get rid of.
+The \verb+table.remove(rectangles,v)+ command gets rid of the \verb+v+th item in the \verb+rectangles+ list.
+But there's an added extra: when it removes an item from the middle of the list then all the items after it get shifted up.
+
+So suppose we have the list:
+
+\begin{verbatim}
+list = {"a","b","c","d","e"}
+\end{verbatim}
+
+\noindent and we want to remove the \verb+"b"+ and \verb+"d"+ items.
+These are in positions \(2\) and \(4\).
+If we do:
+
+\begin{verbatim}
+table.remove(list,2)
+table.remove(list,4)
+\end{verbatim}
+
+We will actually end up with \verb+{"a","c","d"}+.
+This is because after removing the \verb+"b"+ from position \(2\) then everything shifts up so our list is now:
+
+\begin{verbatim}
+list = {"a","c","d","e"}
+\end{verbatim}
+
+\noindent and \verb+"e"+ is now in position \(4\).
+So the next line removes \verb+"e"+, not \verb+"d"+ as intended.
+
+The solution is to work backwards through the list.
+If we do:
+
+\begin{verbatim}
+table.remove(list,4)
+table.remove(list,2)
+\end{verbatim}
+
+Then after the first removal we have:
+
+\begin{verbatim}
+list = {"a","b","c","e"}
+\end{verbatim}
+
+\noindent and although the \verb+"e"+ has moved up, the \verb+"b"+ is still in position \(2\) where it started.
+So the second removal does remove \verb+"b"+ as intended.
+
+This is why we add the positions to the front of the \verb+del+ list so that at the end they are in descending order.
+
+(In actual fact, unless you are extremely fast clicking the mouse then there will only ever be one rectangle removed at a time.
+But the general principle is important.)
+
+Our final code is:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  parameter.watch("Number of rectangles","#rectangles")
+  rectangles = {}
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  del = {}
+  for k,v in ipairs(rectangles) do
+    fill(v.colour)
+    rect(v[1],v.size)
+    v.size = v.size - 1
+    if v.size == 0 then
+      table.insert(del,1,k)
+    end
+  end
+  for k,v in ipairs(del) do
+    table.remove(rectangles,v)
+  end
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(rectangles,{coordinate(t.x,t.y),colour = randomColour(),size = 100})
+  end
+end
+
+function randomColour()
+  local r = math.random(255)
+  local g = math.random(255)
+  local b = math.random(255)
+  return colour(r,g,b)
+end
+\end{verbatim}
+
+\subsection{Do It Yourself \dots\ But Better}
+
+You could try adding more information to each rectangle when it is created.
+Try making the size random as well.
+You could make the outline a random colour and random width.
+It could also decrease in size at a random rate.
+
+Note: the \verb+math.random+ function has three modes:
+
+\begin{itemize}
+\item \verb+math.random()+ returns a random number between \(0\) and \(1\).
+\item \verb+math.random(b)+ returns a random integer between \(1\) and \(b\).
+\item \verb+math.random(a,b)+ returns a random integer between \(a\) and \(b\).
+\end{itemize}
+
+You could also replace the \verb+rect+ command by \verb+ellipse+ to make circles instead of squares.
+
+Another possibility would be to add squares (or circles) on \emph{every} mouse event.
+To do this, remove the line \verb+if t.state == ENDED then+ and the corresponding \verb+end+.
+Then if you drag the mouse across the canvas you will get a trail of shapes that gradually shrink.
+
+\end{document}

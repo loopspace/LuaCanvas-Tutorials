@@ -1,0 +1,501 @@
+\documentclass[
+  xhtml,%
+  use filename%
+]{internet}
+
+\usepackage{tutorial}
+\usepackage{hyperref}
+
+\title{Points and Lines}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Getting Started}
+
+\begin{enumerate}
+\item Log on to the computer and launch a web browser
+\item Navigate to \href{http://luacanvas.mathforge.org?project=Grid}{http://luacanvas.mathforge.org?project=Grid}
+\item The big area in the centre of the screen is where you can type code (we call this the \emph{editor} region).
+Clicking on the box labelled \verb+Execute+ will run your code.
+When your code is running, clicking on the box labelled \verb+Edit+ will get you back to the editor.
+
+\item There should be some code already in the editor.
+Try running it, you should see a coordinate grid drawn on the screen.
+\end{enumerate}
+
+\section{Adding Coordinates}
+
+As in the \href{Coordinates.xhtml}{Coordinates} tutorial, we will make considerable use of the \verb+point+ command, so let's make the same alias.
+That is, put \verb+p=point+ in the \verb+setup+ function (i.e.\ after the line \verb+function setup()+ and before the first \verb+end+).
+
+We'll also be adding some points, so we'll make a \emph{table} to put them in and draw them on the grid, just as in the \href{Coordinates.xhtml}{Coordinates} tutorial.
+
+Your code should be (I've put in one point just to check that it is working):
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  p=point
+  points={
+    p(1,2)
+  }
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  fill("cyan")
+  noStroke()
+  for k,v in ipairs(points) do
+    ellipse(v,.5)
+  end
+end
+\end{verbatim}
+
+We can now add points to our list and the program will display them on the screen.
+Feel free to change the colour.
+If you want to change the size of the circle, you can do that as well; you shouldn't make it any bigger than \(.5\).
+
+\section{Points on a Line}
+
+Let's pick a line and draw some points on that line.
+We'll start with something simple to get the idea.
+Let's start with the line of points whose \(y\)--coordinate is \(7\).
+Remember that we write this line as ``\(y = 7\)''.
+
+Think up some points on that line and put them in the \verb+points+ table.
+So that line might read:
+
+\begin{verbatim}
+points={
+  p(1,7), p(2,7), p(7,7)
+}
+\end{verbatim}
+
+Note the commas \emph{between} the points.
+It won't work if you forget them.
+
+It's easy to see that these points all lie on the same line (assuming that you have typed in the coordinates of the points correctly).
+Let's be more ambitious.
+Let's now draw some points on the line ``\(y = x + 1\)''.
+Remember that this means ``The line of points whose \(y\)--coordinate is one more than their \(x\)--coordinate.''.
+As a start, the point \((2,3)\) lies on this line.
+Replace your existing list by a list of points on this new line.
+
+Your code should look something like this, but with different points.
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  p=point
+  points={
+    p(2,3), p(4,5), p(7,8)
+  }
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  fill("cyan")
+  noStroke()
+  for k,v in ipairs(points) do
+    ellipse(v,.5)
+  end
+end
+\end{verbatim}
+
+If you are feeling confident, try doing this for the line \(2 y = 3 x + 2\).
+Think first how we interpret this equation as a description of the line and then think of some points that lie on it.
+
+\section{Drawing a Line}
+
+It is possible that in your list you made a mistake; when you run the code then you should be able to tell if one of the points is off the line or not.
+Try making a deliberate mistake to see the effect.
+
+When making a deliberate mistake, you probably made the difference very big.
+For example, the point \((2,-5)\) does not lie on the line \(y = x + 1\) and very obviously so.
+But mistakes don't have to be big to be mistakes, and because small ones can be harder to spot, their effect can be larger than it should be.
+For the line \(y = x + 1\), try the points:
+\((-18,-16)\), \((2,3)\), \((4,5)\), and \((7,8)\).
+Is it really obvious that \((-18,-16)\) is off the line?
+
+One way to resolve the matter is to draw the actual line.
+We need two points to draw a line (when drawing on paper it is good to have a third point as a ``check'' but the computer is more reliable and only needs two).
+Unfortunately, while we are able to extend a line beyond the points, the computer will only draw the part of the line between the given points.
+So we need to make sure that our points are wide apart.
+It is allowed for the points to be ``off screen'', only the part on the screen will be drawn.
+
+To draw the line \(y = x + 1\), we need a point off the bottom left of the screen.
+The grid is set up so that the short direction goes from  \(-20\) to \(20\).
+Therefore, the point \((-22,-21)\), which lies on the line, is definitely off the bottom left of the screen.
+Similarly, \((21,22)\), which is also on the line, is definitely off the top right.
+So we can use these two points to draw our line.
+To do this, we use the command \verb+line(-22,-21,21,22)+.
+If we put this \emph{after} the loop which draws our points then it will be easier to see whether or not our points are on the line.
+We need to decide on its colour and width\begin{marginpar}The \emph{width} is in pixels and is not affected by the grid scale.\end{marginpar}.
+To set the width, we write \verb+strokeWidth(2)+, and for the colour we write \verb+stroke("yellow")+ (we can change the \verb+2+ and \verb+yellow+ if we want).
+These need to go before the \verb+line+ command but after the loop which draws our points.
+
+Your code should now look something like the following:
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  p=point
+  points={
+    p(2,3), p(4,5), p(7,8), p(-18,-16)
+  }
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  fill("cyan")
+  noStroke()
+  for k,v in ipairs(points) do
+    ellipse(v,.5)
+  end
+  strokeWidth(2)
+  stroke("yellow")
+  line(-22,-21,21,22)
+end
+\end{verbatim}
+
+If you are feeling confident, try doing this for the line \(2 y = 3 x + 2\).
+You might have to do a bit of thinking to find the right coordinates for the end points of your line.
+
+\section{The Online Test}
+
+Now that we've drawn the line, it is obvious that the point \((-18,-16)\) does not lie on the line.
+But if we changed it to \((-18,-17.1)\) then it's not so obvious.
+And if you think that it \emph{is} obvious, try \((-18,-17.01)\).
+
+What we need is a \emph{test} to decide whether or not a given point is on our line.
+The equation of the line is exactly that.
+Remember that ``the line \(y = x + 1\)'' means ``the line of points whose \(y\)--coordinate is one more than their \(x\)--coordinate''.
+So to test if a point is on the line we simply ask ``Is its \(y\)--coordinate equal to one more than its \(x\)--coordinate?''.
+If the answer is yes, it is on the line; if no, it isn't.
+
+So we want to translate the question ``Is its \(y\)--coordinate equal to one more than its \(x\)--coordinate?'' into something that a computer can understand.
+Computers don't think\begin{marginpar}Computers don't think at all.  But it's a useful turn of phrase.\end{marginpar} in terms of questions.
+They think in terms of \emph{tests}.
+We run a test on a point and either the test is \emph{true} or \emph{false}.
+
+The test we want is to see if the \(y\)--coordinate is equal to the \(x\)--coordinate plus one.
+This is a slightly different meaning of ``equals'' than when we say ``let \(b = 3\)''.
+In Lua, an equality \emph{test} is written with a double equals sign \verb+==+ (that's two equals signs next to each other).
+So to test if the point \verb+v+ is on the line we would write:
+
+\begin{verbatim}
+if v.y == v.x + 1 then
+\end{verbatim}
+
+Note that to get at the \(y\)--coordinate of the point \verb+v+ we write \verb+v.y+ and to get at the \(x\)--coordinate we write \verb+v.x+. 
+
+This is the start of the test, what we write next is what to do if the test is \emph{true}.
+For example, we could change the colour of the dot:
+
+\begin{verbatim}
+if v.y == v.x + 1 then
+  fill("yellow")
+end
+\end{verbatim}
+
+The trouble with this is that once the condition is true for one point, the colour gets changed and stays changed.
+We need to set it to something else if the test fails.
+To do that we use the word \verb+else+.
+
+\begin{verbatim}
+if v.y == v.x + 1 then
+  fill("yellow")
+else
+  fill("cyan")
+end
+\end{verbatim}
+
+The meaning of this is as follows.
+The test is checked, if it is true then the colour is set to yellow; if it is false then it is set to cyan.
+
+We put this inside our loop before the ellipse command.
+Thus our code will look something like the following.
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  p=point
+  points={
+    p(2,3), p(4,5), p(7,8), p(-18,-17.01)
+  }
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  fill("cyan")
+  noStroke()
+  for k,v in ipairs(points) do
+    if v.y == v.x + 1 then
+      fill("cyan")
+    else
+      fill("fuchsia")
+    end
+    ellipse(v,.5)
+  end
+  strokeWidth(2)
+  stroke("yellow")
+  line(-22,-21,21,22)
+end
+\end{verbatim}
+
+You can try this for other lines as well.
+
+\section{The Line Challenge}
+
+It's a bit tedious to be typing in the set of points each time.
+One way to make that a bit easier is to use the mouse to click on the grid and assemble the points that way.
+When you click on the screen, the information about the click is passed to the program in a very special way.
+To get the click coordinates we need to type a new block of code at the very end of what we have so far:
+
+\begin{verbatim}
+function touched(t)
+  if t.state == ENDED then
+    table.insert(points,p(t))
+  end
+end
+\end{verbatim}
+
+This won't work.
+The problem is that the information about the mouse click uses coordinates relative to the screen and measured in pixels.
+It doesn't know about our grid.
+Fortunately, we do and our grid knows how to convert the coordinates.
+So what we actually want is:
+
+\begin{verbatim}
+function touched(t)
+  if t.state == ENDED then
+    table.insert(points,g:invtransform(t))
+  end
+end
+\end{verbatim}
+
+This rounds to the nearest grid square.
+If you want to allow more precision, replace \verb+g:invtransform(t)+ with \verb+g:invtransform(t,1)+.
+
+Our complete code is now:
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  p=point
+  points={
+    p(2,3), p(4,5), p(7,8), p(-18,-17.01)
+  }
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  fill("cyan")
+  noStroke()
+  for k,v in ipairs(points) do
+    if v.y == v.x + 1 then
+      fill("cyan")
+    else
+      fill("fuchsia")
+    end
+    ellipse(v,.5)
+  end
+  strokeWidth(2)
+  stroke("yellow")
+  line(-22,-21,21,22)
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(points,g:invtransform(t,1))
+  end
+end
+\end{verbatim}
+
+What you can do now is make a challenge for a friend.
+Choose a new equation of a line
+(don't make it too complicated first time round).
+Clear out the points from the \verb+points+ table, remove the code that actually draws the line, and change the test so that it matches your line not \(y = x + 1\) (remember to use the double equals sign).
+
+So your code should look like the following, only with a different test:
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  p=point
+  points={}
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  fill("cyan")
+  noStroke()
+  for k,v in ipairs(points) do
+    if v.y == v.x + 1 then
+      fill("cyan")
+    else
+      fill("fuchsia")
+    end
+    ellipse(v,.5)
+  end
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(points,g:invtransform(t))
+  end
+end
+\end{verbatim}
+
+Now start the code and challenge a friend to discover the equation of your line by finding points on it.
+
+\section{Some Extras}
+
+Here are some ideas on how to take things further.
+
+\begin{itemize}
+\item In the challenge game, have a button that if pressed draws the line.
+To create such a button, put the following in the \verb+setup+ function:
+
+\begin{verbatim}
+parameter.boolean("Draw line","doline",false)
+\end{verbatim}
+
+This creates a \emph{boolean} called \verb+doline+.
+A boolean is a special variable that is either \emph{true} or \emph{false}.
+It can be used in a test, so you can write:
+
+\begin{verbatim}
+if doline then
+  ...
+end
+\end{verbatim}
+
+The code in the middle is used if \verb+doline+ is true, but is ignored if not.
+
+\item You might also want to be able to clear the table of points.
+You can create a button that does this.
+In the \verb+setup+ function write:
+
+\begin{verbatim}
+parameter.action("Clear points",function() points = {} end) 
+\end{verbatim}
+
+\item If you want to draw more than one line, you could make a table of lines.
+For each line, you might want some points on it, a colour, the end points for drawing it, and even a test function for whether a point is on the line.
+You might have something like:
+
+\begin{verbatim}
+lines = {
+  {
+    colour = colour("yellow"),
+    points = {p(1,2), p(3,4), p(7,8)},
+    ends = {p(-22,-21),p(21,22)},
+    test = function(c) return c.y == c.x + 1 end
+  },
+  {
+    colour = colour("cyan"),
+    points = {p(2,4), p(4,7), p(0,1)},
+    ends = {p(-20,-29),p(20,31)},
+    test = function(c) return 2*c.y == 3*c.x + 2 end
+  },
+}
+\end{verbatim}
+
+Then in the \verb+draw+ function, we need to iterate over the lines first.
+
+\begin{verbatim}
+for l,u in ipairs(lines) do
+  noStroke()
+  fill(u.colour)
+  for k,v in ipairs(u.points) do
+    ellipse(v,.5)
+  end
+  stroke(u.colour)
+  strokeWidth(2)
+  line(u.ends[1],u.ends[2])
+end
+\end{verbatim}
+
+For testing points from the mouse, we could do:
+
+\begin{verbatim}
+for k,v in ipairs(points) do
+  fill("green")
+  for l,u in ipairs(lines) do
+    if u.test(v) then
+      fill(u.colour)
+    end
+  end
+  ellipse(v,.5)
+end
+\end{verbatim}
+\end{itemize}
+
+Putting all that together, our full code looks like:
+
+\begin{verbatim}
+function setup()
+  g=Grid(20,5)
+  parameter.action("Clear points",function() points = {} end)
+  parameter.boolean("Draw lines","doline",false)
+  p=point
+  lines = {
+    {
+      colour = colour("yellow"),
+      points = {p(1,2), p(3,4), p(7,8)},
+    	ends = {p(-22,-21),p(21,22)},
+      test = function(c) return c.y == c.x + 1 end
+    },
+    {
+      colour = colour("cyan"),
+      points = {p(2,4), p(4,7), p(0,1)},
+      ends = {p(-20,-29),p(20,31)},
+      test = function(c) return 2*c.y == 3*c.x + 2 end
+    },
+	}
+  points={}
+end
+
+function draw()
+  background(40,40,50)
+  g:draw()
+  for l,u in ipairs(lines) do
+    noStroke()
+    fill(u.colour)
+    for k,v in ipairs(u.points) do
+      ellipse(v,.5)
+    end
+    if doline then
+      stroke(u.colour)
+      strokeWidth(2)
+      line(u.ends[1],u.ends[2])
+    end
+  end
+  noStroke()
+  for k,v in ipairs(points) do
+    fill("green")
+    for l,u in ipairs(lines) do
+      if u.test(v) then
+        fill(u.colour)
+      end
+    end
+    ellipse(v,.5)
+  end
+end
+
+function touched(t)
+  if t.state == ENDED then
+    table.insert(points,g:invtransform(t))
+  end
+end
+\end{verbatim}
+
+\end{document}
