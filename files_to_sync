@@ -1,30 +1,7 @@
-./Coordinates.xhtml
-./css/article.css
-./css/large.css
-./css/mathml.css
-./css/medium.css
-./css/numberedeqns.css
-./css/small.css
-./css/style.css
-./images/bg-ink.jpg
-./images/ChapterIconConsole.png
-./images/ChapterIconGraphics.png
-./images/ChapterIconLua.png
-./images/ChapterIconParameters.png
-./images/ChapterIconTouch.png
-./images/ChapterIconVector.png
-./images/flowlines.jpg
-./images/LuaCanvas-Logo.jpg
-./images/LuaCanvas-Logo.png
-./images/Type-Const.png
-./images/Type-Function.png
-./images/Type-Method.png
-./images/Type-Overview.png
-./images/Type-Type.png
-./index.html
-./js/setwidth.js
-./lib/ace.js
-./lib/jquery-1.10.1.min.js
-./Style.xhtml
-./Variables.xhtml
-./WhackARect.xhtml
++ css/*.css
++ images/*.png
++ images/*.jpg
++ js/*.js
++ lib/*.js
++ *.xhtml
+- *
