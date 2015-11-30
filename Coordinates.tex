@@ -4,18 +4,7 @@
 ]{internet}
 %\usepackage{fancyvrb}
 %\usepackage[scale=.8]{geometry}
-\loadcss{css/mathml}
-\loadcss{css/numberedeqns}
-\loadcss{css/article}
-\loadfullcss{https://fonts.googleapis.com/css?family=Raleway:300}
-\loadcss[all and (max-width: 767px)]{css/small}
-\loadcss[all and (min-width: 768px) and (max-width: 1024px)]{css/medium}
-\loadcss[all and (min-width: 1025px)]{css/large}
-\loadjs{js/setwidth}
-\loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
-\SetLinkType{targetblank}
-
-
+\usepackage{tutorial}
 \usepackage{hyperref}
 
 \title{Using Coordinates}
@@ -37,27 +26,27 @@ Try running it, you should see a coordinate grid drawn on the screen.
 \section{Coordinates}
 
 You can use coordinates to refer to points on the screen.
-Just as on paper, a coordinate like \((3,4)\) means \(3\) units left and \(4\) units up.
+Just as on paper, a pair of coordinates like \((3,4)\) means \(3\) units left and \(4\) units up.
 Usually, the origin (that is, \((0,0)\)) is at the lower left corner of the box and the units are pixels on the screen (so \((3,4)\) is not very far: \(3\) dots right and \(4\) dots up).
 The grid shifts the origin to the centre of the screen and makes the units bigger.
 
-Now we want to draw something on the screen by joining coordinates with lines.
-In Maths, we write a coordinate like \((3,4)\).
-In programming, we need to explicitly tell the program when we want to refer to a coordinate.
-In this setting, the way to do this is \verb+coordinate(3,4)+.
+Now we want to draw something on the screen by joining points with lines.
+In Maths, we write the coordinates of a point like \((3,4)\).
+In programming, we need to explicitly tell the program when we want to refer to a point via its coordinates.
+In this setting, the way to do this is \verb+point(3,4)+.
 
-We're going to be writing a lot of coordinates and \verb+coordinate(3,4)+ is a lot to type each time.
+We're going to be writing a lot of coordinates and \verb+point(3,4)+ is a lot to type each time.
 Fortunately, we can make a shortcut.
 Click at the end of line 2 and press return to make a new line.
-Type \verb+c=coordinate+.
-This makes \verb+c+ a shortcut or alias for \verb+coordinate+.
+Type \verb+p=point+.
+This makes \verb+p+ a shortcut or alias for \verb+point+.
 
 The start of your code should now look like this:
 
 \begin{verbatim}
 function setup()
   g=Grid(20,5)
-  c=coordinate
+  p=point
 end
 \end{verbatim}
 
@@ -65,22 +54,22 @@ end
 
 To draw on the screen we need to put some instructions somewhere between the line \verb+function draw()+ and the \verb+end+ at the end of the code.
 
-To draw a line between two coordinates we'll use the \verb+line+ command.
+To draw a line between two points we'll use the \verb+line+ command.
 We can draw a line between two points by writing:
 
 \begin{verbatim}
-line(c(1,2),c(10,-3))
+line(p(1,2),p(10,-3))
 \end{verbatim}
 
-So to draw a series of lines between points, we repeat this line with each pair of coordinates.
+So to draw a series of lines between points, we repeat this line with each pair of points.
 These should go after the line \verb+g:draw()+ (which draws the grid) so that they are drawn over the top of the grid.
 For example:
 
 \begin{verbatim}
-  line(c(1,2),c(10,2))
-  line(c(10,2),c(10,7))
-  line(c(10,7),c(1,7))
-  line(c(1,7),c(1,2))
+  line(p(1,2),p(10,2))
+  line(p(10,2),p(10,7))
+  line(p(10,7),p(1,7))
+  line(p(1,7),p(1,2))
 \end{verbatim}
 
 You can change the thickness of the line and its colour as well.
@@ -101,44 +90,44 @@ function draw()
   g:draw()
   stroke(150,40,200)
   strokeWidth(5)
-  line(c(1,2),c(10,2))
-  line(c(10,2),c(10,7))
-  line(c(10,7),c(1,7))
-  line(c(1,7),c(1,2))
+  line(p(1,2),p(10,2))
+  line(p(10,2),p(10,7))
+  line(p(10,7),p(1,7))
+  line(p(1,7),p(1,2))
 end
 \end{verbatim}
 
 \section{Repeating Things}
 
-Writing things like \verb+line(c(1,2),c(10,2))+ lots of times gets a bit repetitive.
+Writing things like \verb+line(p(1,2),p(10,2))+ lots of times gets a bit repetitive.
 Computers are supposed to alleviate things like that.
 We can make the computer do the hard work for us.
-We make a list of the coordinates and tell the computer to draw a line between each coordinate and the previous one.
+We make a list of the points and tell the computer to draw a line between each point and the previous one.
 
-To make our list of points, after our shortcut line (with \verb+c=coordinate+ on it), type \verb+points={}+.
-Between the curly braces (the \verb+{}+) we put the list of coordinates, using a comma between each one.
-With the coordinates above, we would have:
+To make our list of points, after our shortcut line (with \verb+p=point+ on it), type \verb+points={}+.
+Between the curly braces (the \verb+{}+) we put the list of points, using a comma between each one.
+With the points above, we would have:
 
 \begin{verbatim}
-points={c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)}
+points={p(1,2), p(10,2), p(10,7), p(1,7), p(1,2)}
 \end{verbatim}
 
 You can put it on separate lines if you like, so it can look like:
 
 \begin{verbatim}
   points = {
-    c(1,2),
-    c(10,2),
-    c(10,7),
-    c(1,7),
-    c(1,2)
+    p(1,2),
+    p(10,2),
+    p(10,7),
+    p(1,7),
+    p(1,2)
   }
 \end{verbatim}
 
 To draw the lines between the points, we use what is called a \emph{for loop}.
 This is a way of repeating something a set number of times.
 When we repeat it, we have a \emph{counter} to keep track of how many times we've repeated it.
-As the first line is from the first to the second coordinate, we start our counter at \(2\) and repeat until the end of the list of coordinates.
+As the first line is from the first to the second point, we start our counter at \(2\) and repeat until the end of the list of points.
 So we start our loop with:
 
 \begin{verbatim}
@@ -149,10 +138,10 @@ The \verb+#points+ is the number of points in our list.
 The \verb+k+ is the counter which we can use inside the loop.
 Each time through the loop it goes up by \(1\).
 
-To draw a line between the \(k\)th coordinate and the previous one, we need to refer to the \(k\)th coordinate in our list.
+To draw a line between the \(k\)th point and the previous one, we need to refer to the \(k\)th point in our list.
 We do this by writing \verb+points[k]+.
-We also need to refer to the previous coordinate.
-This is the \(k-1\)th coordinate in our list, so we write \verb+points[k-1]+ to refer to this.
+We also need to refer to the previous point.
+This is the \(k-1\)th point in our list, so we write \verb+points[k-1]+ to refer to this.
 To draw the line between them, we write:
 
 \begin{verbatim}
@@ -174,9 +163,9 @@ The full code should now look something like the following:
 \begin{verbatim}
 function setup()
   g=Grid(20,5)
-  c=coordinate
+  p=point
   points={
-       c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+       p(1,2), p(10,2), p(10,7), p(1,7), p(1,2)
   }
 end
 
@@ -195,17 +184,17 @@ end
 
 Lists can be \emph{nested}, meaning that we can form lists of lists.
 As can for-loops.
-So if we have several lists of coordinates to draw lines with, we can make a list of all of the families of coordinates, and then go through them one by one drawing the lines.
+So if we have several lists of points to draw lines with, we can make a list of all of the families of points, and then go through them one by one drawing the lines.
 
-To make the list of lists, in the \verb+setup+ function we have an outer list as before and inside it we list our coordinates as before, but around each family we put curly braces (and put commas between the families):
+To make the list of lists, in the \verb+setup+ function we have an outer list as before and inside it we list our points as before, but around each family we put curly braces (and put commas between the families):
 
 \begin{verbatim}
 points={
     {
-       c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+       p(1,2), p(10,2), p(10,7), p(1,7), p(1,2)
     },
     {
-       c(-1,2), c(-10,2), c(-10,7), c(-1,7), c(-1,2)
+       p(-1,2), p(-10,2), p(-10,7), p(-1,7), p(-1,2)
     }
 }
 \end{verbatim}
@@ -221,20 +210,20 @@ for j=1,#points do
 end
 \end{verbatim}
 
-Here, \verb+points[j][k]+ refers to the \(k\)th coordinate in the \(j\)th list of coordinates.
+Here, \verb+points[j][k]+ refers to the \(k\)th point in the \(j\)th list of points.
 
 At the end of this, our whole code looks like:
 
 \begin{verbatim}
 function setup()
   g=Grid(20,5)
-  c=coordinate
+  c=point
   points={
     {
-       c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+       p(1,2), p(10,2), p(10,7), p(1,7), p(1,2)
     },
     {
-       c(-1,2), c(-10,2), c(-10,7), c(-1,7), c(-1,2)
+       p(-1,2), p(-10,2), p(-10,7), p(-1,7), p(-1,2)
     }
   }
 end
@@ -255,18 +244,18 @@ end
 \section{A Dash of Style}
 
 We can go further and change the colours of our lines.
-To do this, we need to store a colour together with each list of coordinates.
-To distinguish this from the list of coordinates, we give the colour a \emph{key}.
+To do this, we need to store a colour together with each list of points.
+To distinguish this from the list of points, we give the colour a \emph{key}.
 If we want to make the first family of lines, say, yellow we change the list to read:
 
 \begin{verbatim}
 {
    colour = colour(255,255,0),
-   c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+   p(1,2), p(10,2), p(10,7), p(1,7), p(1,2)
 },
 \end{verbatim}
 
-When we work with the list of coordinates, we need to use that colour.
+When we work with the list of points, we need to use that colour.
 To do this, our loop needs to read:
 
 \begin{verbatim}
@@ -283,15 +272,15 @@ Our full code might now look like the following:
 \begin{verbatim}
 function setup()
   g=Grid(20,5)
-  c=coordinate
+  c=point
   points={
     {
        colour = colour(255,255,0),
-       c(1,2), c(10,2), c(10,7), c(1,7), c(1,2)
+       p(1,2), p(10,2), p(10,7), p(1,7), p(1,2)
     },
     {
        colour = colour(255,0,255),
-       c(-1,2), c(-10,2), c(-10,7), c(-1,7), c(-1,2)
+       p(-1,2), p(-10,2), p(-10,7), p(-1,7), p(-1,2)
     }
   }
 end
