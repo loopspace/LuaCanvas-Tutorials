@@ -2,19 +2,8 @@
   xhtml,%
   use filename%
 ]{internet}
-%\usepackage{fancyvrb}
-%\usepackage[scale=.8]{geometry}
-\loadcss{css/mathml}
-\loadcss{css/numberedeqns}
-\loadcss{css/article}
-\loadfullcss{https://fonts.googleapis.com/css?family=Raleway:300}
-\loadcss[all and (max-width: 767px)]{css/small}
-\loadcss[all and (min-width: 768px) and (max-width: 1024px)]{css/medium}
-\loadcss[all and (min-width: 1025px)]{css/large}
-\loadjs{js/setwidth}
-\loadfulljs{http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML}
-\SetLinkType{targetblank}
 
+\usepackage{tutorial}
 \usepackage{hyperref}
 
 \title{Whack a Rect}
@@ -273,7 +262,7 @@ Our full function is (anything after \verb+--+ is a \emph{comment} and is ignore
 
 \begin{verbatim}
 function touched(t)
-    if t.state == "BEGAN" then -- detect whether we're clicking
+    if t.state == BEGAN then -- detect whether we're clicking
                          -- or doing something else with the mouse
         if t.x > x -- are we to the right of the left side of the rectangle?
             and t.x < x + s -- are we also to the left of the right side?
