@@ -1,0 +1,285 @@
+\documentclass[
+  xhtml,%
+  use filename%
+]{internet}
+
+\usepackage{tutorial}
+\usepackage{hyperref}
+
+\title{A Christmas Card}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+There are several built-in shapes that you can use to make a scene on the screen, but sometimes you need a little more flexibility.
+In this tutorial, we'll introduce \verb+path+s and see how we can use them to make almost any shape.
+
+\section{The Basics}
+
+A \verb+path+ is what it sounds like: a path on the screen.
+It is built up out of pieces like lines and arcs.
+To make a path, you first give it a name.
+Then you add pieces to it.
+
+For example, in the following code we define a simple shape in the \verb+setup+ function.
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  shape = path()
+  shape:moveTo(200,200)
+  shape:lineTo(300,200)
+  shape:lineTo(200,300)
+end
+
+function draw()
+  background(40,40,50)
+  fill(150,200,30)
+  stroke(200,30,150)
+  strokeWidth(10)
+  rect(20,20,100,100)
+  shape:fill()
+  shape:draw()
+end
+\end{verbatim}
+
+Defining the shape is the lines:
+
+\begin{verbatim}
+shape = path()
+shape:moveTo(200,200)
+shape:lineTo(300,200)
+shape:lineTo(200,300)
+\end{verbatim}
+
+The first line names our path \verb+shape+.
+The second line \emph{moves} our path to the point \((200,200)\).
+This tells our path where to start.
+The third line then adds a line to the path, starting at its current point (which is \((200,200)\)) and ending at \((300,200)\).
+Every time we add a piece to the path, it starts where the last one ended.
+Then the last line adds another line from \((300,200)\) to \((200,300)\).
+
+This sets up the shape.
+To put something on the screen, we have the lines in the \verb+draw+ function:
+
+\begin{verbatim}
+shape:fill()
+shape:draw()
+\end{verbatim}
+
+The first line \emph{fills} the path with the current \verb+fill+ colour.
+As our path is not closed, it joins it up to close it before filling it.
+The second line draws the path with the current \verb+stroke+ colour and \verb+strokeWidth+.
+(The path isn't closed when it is drawn.)
+
+\section{Drawing a Tree}
+
+We can draw a Christmas tree using paths.
+Let's start with naming our path: put \verb+tree = path()+ in the \verb+setup+ function.
+We'll define it so that the top of the tree is at the point \verb+(0,0)+ and then use \emph{transformations} to move it to where we want it.
+To make our tree start at \verb+(0,0)+, we write \verb+tree:moveTo(0,0)+.
+
+We want to start with a nice curve.
+We can do that with an arc.
+To add an arc, we need to fix a centre, a radius, and starting and ending angles.
+So to draw a quarter circle starting at the top and sweeping down, we could use:
+
+\begin{verbatim}
+tree:arc(-100,0,100,0,-90,true)
+\end{verbatim}
+
+This arc is drawn from a circle centred at \verb+(-100,0)+ and has radius \verb+100+.
+
+We'll want another arc the other side.
+
+\begin{verbatim}
+tree:arc(100,0,100,-90,-180,true)
+\end{verbatim}
+
+We'll just be filling the shape so don't need to worry about joining up the arcs.
+
+To draw the shape, we need to move it and then fill it.
+In the \verb+draw+ function, we write:
+
+\begin{verbatim}
+tree:use({transformShape = true, fill})
+\end{verbatim}
+
+Putting all that together, we have:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  tree = path()
+  tree:moveTo(0,0)
+  tree:arc(-100,0,100,0,-90,true)
+  tree:arc(100,0,100,-90,-180,true)
+end
+
+function draw()
+  background(40,40,50)
+  fill(50,200,30)
+  translate(WIDTH/2,HEIGHT-50)
+  tree:use({transformShape = true, fill = true})
+end
+\end{verbatim}
+
+We can add another segment of the tree with more arcs:
+
+\begin{verbatim}
+tree:arc(-200,0,200,0,-90,true)
+tree:arc(200,0,200,-90,-180,true)
+\end{verbatim}
+
+We can add a third segment by changing the \verb+200+s to \verb+300+s, but that doesn't look quite right.
+Better is to use a smaller arc slightly lower down.
+
+\begin{verbatim}
+tree:arc(-250,-50,250,0,-90,true)
+tree:arc(250,-50,250,-90,-180,true)
+\end{verbatim}
+
+Our code at this point looks like the following:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  tree = path()
+  tree:moveTo(0,0)
+  tree:arc(-100,0,100,0,-90,true)
+  tree:arc(100,0,100,-90,-180,true)
+  tree:arc(-200,0,200,0,-90,true)
+  tree:arc(200,0,200,-90,-180,true)
+  tree:arc(-250,-50,250,0,-90,true)
+  tree:arc(250,-50,250,-90,-180,true)
+end
+
+function draw()
+  background(40,40,50)
+  fill(50,200,30)
+  stroke(0,0,0)
+  strokeWidth(5)
+  translate(WIDTH/2,HEIGHT-50)
+  tree:use({transformShape = true, fill = true})
+end
+\end{verbatim}
+
+\section{The Trunk and Bucket}
+
+The trunk and the bucket will be a new paths, one for each.
+One reason for this is that we will fill them with different colours.
+So in \verb+setup+ we need paths \verb+trunk = path()+ and \verb+bucket = path()+.
+We'll actually draw the trunk first so it can overlap slightly with the tree and bucket.
+So it just needs to be a rectangle.
+The centre of the bottom of the tree is at \verb+(0,-300)+, so we start just left of there:
+
+\begin{verbatim}
+trunk:moveTo(-10,-300)
+trunk:lineTo(-10,-350)
+trunk:lineTo(10,-350)
+trunk:lineTo(10,-300)
+\end{verbatim}
+
+When filling each path, we can specify the colour as part of its options.
+This saves us having to remember which colour goes with which piece.
+So in the \verb+draw+ function, we can write:
+
+\begin{verbatim}
+function setup()
+  print("hello world")
+  tree = path()
+  tree:moveTo(0,0)
+  tree:arc(-100,0,100,0,-90,true)
+  tree:arc(100,0,100,-90,-180,true)
+  tree:arc(-200,0,200,0,-90,true)
+  tree:arc(200,0,200,-90,-180,true)
+  tree:arc(-250,-50,250,0,-90,true)
+  tree:arc(250,-50,250,-90,-180,true)
+  trunk = path()
+  trunk:moveTo(-10,-300)
+  trunk:lineTo(-10,-350)
+  trunk:lineTo(10,-350)
+  trunk:lineTo(10,-300)
+end
+
+function draw()
+  background(40,40,50)
+  fill(50,200,30)
+  stroke(0,0,0)
+  strokeWidth(5)
+  translate(WIDTH/2,HEIGHT-50)
+  trunk:use({transformShape = true, fill = colour("brown")})
+  tree:use({transformShape = true, fill = colour(50,200,30)})
+end
+\end{verbatim}
+
+Of course, we can use other colours.
+See the \href{Style.xhtml}{Style} tutorial for more details.
+
+Now for the bucket.
+To give it a more 3D look, we'll curve the top and bottom.
+So in \verb+setup+:
+
+\begin{verbatim}
+bucket = path()
+bucket:moveTo(-30,-340)
+bucket:lineTo(-20,-400)
+bucket:curveTo(-10,-410,10,-410,20,-400)
+bucket:lineTo(30,-340)
+bucket:curveTo(20,-350,-20,-350,-30,-340)
+\end{verbatim}
+
+And in \verb+draw+:
+
+\begin{verbatim}
+trunk:use({transformShape = true, fill = colour("brown")})
+bucket:use({transformShape = true, fill= colour("red")})
+tree:use({transformShape = true, fill = colour(50,200,30)})
+\end{verbatim}
+
+Our full code looks like this:
+
+\begin{verbatim}
+function setup()
+  print("Merry Christmas!")
+  tree = path()
+  tree:moveTo(0,0)
+  tree:arc(-100,0,100,0,-90,true)
+  tree:arc(100,0,100,-90,-180,true)
+  tree:arc(-200,0,200,0,-90,true)
+  tree:arc(200,0,200,-90,-180,true)
+  tree:arc(-250,-50,250,0,-90,true)
+  tree:arc(250,-50,250,-90,-180,true)
+  trunk = path()
+  trunk:moveTo(-10,-300)
+  trunk:lineTo(-10,-350)
+  trunk:lineTo(10,-350)
+  trunk:lineTo(10,-300)
+  bucket = path()
+  bucket:moveTo(-30,-340)
+  bucket:lineTo(-20,-400)
+  bucket:curveTo(-10,-410,10,-410,20,-400)
+  bucket:lineTo(30,-340)
+  bucket:curveTo(20,-350,-20,-350,-30,-340)
+end
+
+function draw()
+  background(40,40,50)
+  translate(WIDTH/2,HEIGHT-50)
+  trunk:use({transformShape = true, fill = colour("brown")})
+  bucket:use({transformShape = true, fill= colour("red")})
+  tree:use({transformShape = true, fill = colour(50,200,30)})
+end
+\end{verbatim}
+
+\section{Decorations}
+
+One we have our basic tree, we can decorate it how we like.
+We could use \verb+ellipse+ or \verb+circle+ to make baubles, and \verb+rect+ to make presents.
+Or we could define new paths to make more complicated objects, like a star for the top.
+
+If we're feeling very ambitious, we could even animate the decorations so that they move around the tree.
+
+\end{document}
